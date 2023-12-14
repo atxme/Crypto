@@ -170,6 +170,13 @@ void verifyParameter(int algorithmetype,
                 exit(EXIT_FAILURE);
             }
             break;
+        
+        case SIGNATURE_VERIFICATION:
+            if (publicKey == NULL) {
+                handleErrorMessage(PUBLIC_KEY_ERROR);
+                exit(EXIT_FAILURE);
+            }
+            break;
 
         case KEY_GENERATION:
 
@@ -446,6 +453,10 @@ void PQS_API(int algorithmetype, int algorithm, unsigned char* publicKey, unsign
 
         case SIGNATURE :
             
+            break;
+
+        case SIGNATURE_VERIFICATION :
+                
             break;
 
         case KEY_GENERATION :
