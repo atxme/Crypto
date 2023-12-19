@@ -7,9 +7,11 @@
 #include <unistd.h>
 
 #include "crypto.h"
+#include "pqsCtx.h"
+#include "pqsError.h"
 
 #define FALCON_PUBLIC_KEY_SIZE_512 768
-#define FALCON_PUCLIC_KEY_SIZE_1024 1792
+#define FALCON_PUBLIC_KEY_SIZE_1024 1792
 #define FALCON_PRIVATE_KEY_SIZE_1024 1280
 #define FALCON_PRIVATE_KEY_SIZE_512 512
 
@@ -83,79 +85,9 @@ enum PQS_ALGORITHM_TYPE{
     ENCRYPTION = 1,
     DECRYPTION = 2,
     SIGNATURE = 3,
-    KEY_GENERATION = 4,
+    SIGNATURE_VERIFICATION= 4,
+    KEY_GENERATION = 5,
 };
-
-enum PQS_ERROR{
-    ERROR_POINTER_NOT_DEFINE,
-    MALLOC_ERROR,
-    ALGORITHME_TYPE_ERROR,
-    ALGORITHME_ERROR,
-    PUBLIC_KEY_ERROR,
-    PRIVATE_KEY_ERROR,
-    MESSAGE_ERROR,
-    SIGNATURE_ERROR,
-    SIGNATURE_VERIFICATION_ERROR,
-    ENCRYPTION_ERROR,
-    DECRYPTION_ERROR,
-    KEY_SIZE_ERROR,
-    PUBLIC_KEY_SIZE_ERROR ,
-    PRIVATE_KEY_SIZE_ERROR ,
-    SIGNATURE_SIZE_ERROR ,
-    ENCRYPTION_SIZE_ERROR ,
-    DECRYPTION_SIZE_ERROR ,
-
-    /// @brief SIG_KEYGEN error code
-    ERROR_SIG_KEYGEN,
-
-    /// @brief the error code count
-    ERROR_CODE_COUNT, // this should be the last one
-};
-
-//////////////////////////////////////////////////////////////////////////////////////////
-// CTX FOR QS_API_PARAM
-//
-// @brief:  this struct is used to pass the parameters to the API
-// @brief:  you must define correctly the call off the API by defining all parameters
-// @brief:  if you don't need the parameter, just pass NULL and the API will accept the call
-//////////////////////////////////////////////////////////////////////////////////////////
-struct{
-    
-    int algorithmetype;
-    int algorithm;
-    unsigned char* publicKey;
-    unsigned char* privateKey;
-    unsigned char* message;
-    size_t messageSize;
-    int keySize;
-    void* output;
-
-}typedef PQS_API_PARAM;
-
-//////////////////////////////////////////////////////////////////////////////////////////
-// CTX FOR PQS_KEY_GEN return
-//
-// @brief:  this struct is used to return the key pair from the API 
-// @brief:  you must define correctly the call off the API by defining all parameters
-//////////////////////////////////////////////////////////////////////////////////////////
-struct {
-    unsigned char *publicKey;
-    unsigned char *privateKey;
-}typedef PQS_KEYGEN_CTX;
-
-//////////////////////////////////////////////////////////////////////////////////////////
-// CTX FOR PQS encryption return
-//
-// @brief:  this struct is used to return the encrypted message from the API
-// @brief:  you must define correctly the call off the API by defining all parameters
-//////////////////////////////////////////////////////////////////////////////////////////
-struct{
-    unsigned char *publicKey;
-    unsigned char *privateKey;
-    unsigned char *message;
-    unsigned char *cipherText;
-    size_t messageSize;
-}typedef PQS_ENCRYPT_CTX;
 
 
 //////////////////////////////////////////
@@ -165,26 +97,26 @@ void print_hex(unsigned char *buf, int len);
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
-// API FOR POST QUANTUM CRYPTOGRAPHY
-// 
-// FOR KEY GENERATION you must put the public key size in the keySize parameter
+/// @brief: API FOR POST QUANTUM CRYPTOGRAPHY INTERACTION 
+/// @brief: FOR KEY GENERATION you must put the public key size in the keySize parameter
+/// @brief:  combine all the functions above to a single API
+/// @brief:  you must define correctly the call off the API by defining all parameters
+/// @brief:  if you don't need the parameter, just pass NULL and the API will accept the call 
 //
-// @brief:  combine all the functions above to a single API
-// @brief:  you must define correctly the call off the API by defining all parameters
-// @brief:  if you don't need the parameter, just pass NULL and the API will accept the call 
+/// @brief: thanks to edit saveFile flag and logFile path for file saving log 
 //
-// @param[in]:  algorithmetype: ENCRYPTION, DECRYPTION, SIGNATURE, KEY_GENERATION
-// @param[in]:  algorithm: FALCON_1024,FALCON_2048, 
+/// @param algorithmetype: ENCRYPTION, DECRYPTION, SIGNATURE, KEY_GENERATION
+/// @param algorithm: FALCON_1024,FALCON_2048, 
 //                     KYBER_512, KYBER_768, KYBER_1024, KYBER_512_90S, KYBER_768_90S, KYBER_1024_90S, 
 //                     DILITHIUM_2, DILITHIUM_3, DILITHIUM_5, DILITHIUM_2_AES, DILITHIUM_3_AES, DILITHIUM_5_AES
+/// @param publicKey:       the public key for encryption and signature verification
+/// @param  privateKey:      the private key for decryption and signature
+/// @param message:         the message for encryption and signature
+/// @param messageSize:     the size of the message
+/// @param keySize:         the size of the key
+/// @param API_CALL_RETURN: return the ctx regarding your call 
 //
-// @param[in]:  publicKey:       the public key for encryption and signature verification
-// @param[in]:  privateKey:      the private key for decryption and signature
-// @param[in]:  message:         the message for encryption and signature
-// @param[in]:  messageSize:     the size of the message
-// @param[in]:  keySize:         the size of the key
-// @param[in]:  API_CALL_RETURN: return the ctx regarding your call 
-//
+/// @return void 
 //////////////////////////////////////////////////////////////////////////////////////////
 void PQS_API(int algorithmetype, 
             int algorithm, 
@@ -193,4 +125,4 @@ void PQS_API(int algorithmetype,
             unsigned char* message,
             size_t messageSize ,
             int keySize,
-            void* API_CALL_RETURN);
+            void** API_CALL_RETURN);
