@@ -119,7 +119,6 @@ struct
     unsigned char* publicKey;
     unsigned char* privateKey;
     unsigned char* message;
-    unsigned char* sharedSecret;
     unsigned char* keyExchangeToken;
     unsigned char* symetricKey;
     size_t keySize;
@@ -146,6 +145,8 @@ struct{
     unsigned char* privateKey;
     unsigned char* publicKey;
     unsigned char* signature;
+    size_t publicKeySize;
+    size_t privateKeySize;
     size_t signatureSize;
     size_t messageSize;
 }typedef PQS_SIGN_CTX;

@@ -128,89 +128,59 @@ void dilithiumSign(PQS_SIGN_CTX *ctx)
         return;
     }
 
-    if (ctx->signatureSize != DILIITHIUM_SIGNATURE_SIZE_2 && ctx->signatureSize != DILIITHIUM_SIGNATURE_SIZE_3 && ctx->signatureSize != DILIITHIUM_SIGNATURE_SIZE_5 ){
-        pqsError(SIGNATURE_ERROR,__LINE__, __FUNCTION__);
-        return;
-    }
-
     OQS_SIG *sig;
 
-    switch (ctx->signatureSize)
+    switch (ctx->privateKeySize)
     {
 
-        case DILIITHIUM_SIGNATURE_SIZE_2 : {
+        case DILIITHIUM_PRIVATE_KEY_SIZE_2 : {
                 
-                sig = OQS_SIG_new(OQS_SIG_alg_dilithium_2);
-    
-                if (sig == NULL ){
-                    pqsError(ERROR_SIG_ALLOC, __LINE__, __FUNCTION__);
-                    exit(EXIT_FAILURE);
-                }
-    
-                ctx->signature = malloc(sig->length_signature * sizeof(unsigned char));
-    
-                if (ctx->signature == NULL) {
-                    pqsError(MALLOC_ERROR, __LINE__, __FUNCTION__);
-                    exit(EXIT_FAILURE);
-                }
-    
-                if (OQS_SIG_sign(sig, ctx->signature, &ctx->signatureSize, ctx->message, ctx->messageSize, ctx->privateKey) != OQS_SUCCESS) {
-                    pqsError(KEYGEN_ERROR, __LINE__, __FUNCTION__);
-                    exit(EXIT_FAILURE);
-                }
-    
-                break;
+            sig = OQS_SIG_new(OQS_SIG_alg_dilithium_2);
+
+            ctx->signature = malloc(sig->length_signature * sizeof(unsigned char));
+
+            break;
         }
 
-        case DILIITHIUM_SIGNATURE_SIZE_3 : {
+        case DILIITHIUM_PRIVATE_KEY_SIZE_3 : {
                 
-                sig = OQS_SIG_new(OQS_SIG_alg_dilithium_3);
-    
-                if (sig == NULL ){
-                    pqsError(ERROR_SIG_ALLOC, __LINE__, __FUNCTION__);
-                    exit(EXIT_FAILURE);
-                }
-    
-                ctx->signature = malloc(sig->length_signature * sizeof(unsigned char));
-    
-                if (ctx->signature == NULL) {
-                    pqsError(MALLOC_ERROR, __LINE__, __FUNCTION__);
-                    exit(EXIT_FAILURE);
-                }
-    
-                if (OQS_SIG_sign(sig, ctx->signature, &ctx->signatureSize, ctx->message, ctx->messageSize, ctx->privateKey) != OQS_SUCCESS) {
-                    pqsError(KEYGEN_ERROR, __LINE__, __FUNCTION__);
-                    exit(EXIT_FAILURE);
-                }
-    
-                break;
+            sig = OQS_SIG_new(OQS_SIG_alg_dilithium_3);
+
+            ctx->signature = malloc(sig->length_signature * sizeof(unsigned char));
+
+            break;
         }
 
-        case DILIITHIUM_SIGNATURE_SIZE_5 : {
+        case DILIITHIUM_PRIVATE_KEY_SIZE_5 : {
                 
-                sig = OQS_SIG_new(OQS_SIG_alg_dilithium_5);
-    
-                if (sig == NULL ){
-                    pqsError(ERROR_SIG_ALLOC, __LINE__, __FUNCTION__);
-                    exit(EXIT_FAILURE);
-                }
-    
-                ctx->signature = malloc(sig->length_signature * sizeof(unsigned char));
-    
-                if (ctx->signature == NULL) {
-                    pqsError(MALLOC_ERROR, __LINE__, __FUNCTION__);
-                    exit(EXIT_FAILURE);
-                }
-    
-                if (OQS_SIG_sign(sig, ctx->signature, &ctx->signatureSize, ctx->message, ctx->messageSize, ctx->privateKey) != OQS_SUCCESS) {
-                    pqsError(KEYGEN_ERROR, __LINE__, __FUNCTION__);
-                    exit(EXIT_FAILURE);
-                }
-    
-                break;
+            sig = OQS_SIG_new(OQS_SIG_alg_dilithium_5);
+
+            ctx->signature = malloc(sig->length_signature * sizeof(unsigned char));
+
+            break;
+        }
+
+        default: {
+            pqsError(PRIVATE_KEY_SIZE_ERROR, __LINE__, __FUNCTION__);
+            exit(EXIT_FAILURE);
         }
         
     }
+
+    if (sig == NULL ){
+            pqsError(ERROR_SIG_ALLOC, __LINE__, __FUNCTION__);
+            exit(EXIT_FAILURE);
+        }
+    
+    if (ctx->signature == NULL) {
+                    pqsError(MALLOC_ERROR, __LINE__, __FUNCTION__);
+                    exit(EXIT_FAILURE);
+                }
+
+    if (OQS_SIG_sign(sig, ctx->signature, &ctx->signatureSize, ctx->message, ctx->messageSize, ctx->privateKey) != OQS_SUCCESS) {
+            pqsError(KEYGEN_ERROR, __LINE__, __FUNCTION__);
+            exit(EXIT_FAILURE);
+        }
 
     OQS_SIG_free(sig);
 
@@ -238,24 +208,25 @@ int dilithiumVerifySign(PQS_SIGN_CTX *ctx) {
 
     OQS_SIG *sig = NULL;
 
-    switch (ctx->signatureSize) {
-        case DILIITHIUM_SIGNATURE_SIZE_2: {
+    switch (ctx->publicKeySize) {
+
+        case DILIITHIUM_PUBLIC_KEY_SIZE_2: {
             sig = OQS_SIG_new(OQS_SIG_alg_dilithium_2);
             break;
         }
 
-        case DILIITHIUM_SIGNATURE_SIZE_3: {
+        case DILIITHIUM_PUBLIC_KEY_SIZE_3: {
             sig = OQS_SIG_new(OQS_SIG_alg_dilithium_3);
             break;
         }
 
-        case DILIITHIUM_SIGNATURE_SIZE_5: {
+        case DILIITHIUM_PUBLIC_KEY_SIZE_5: {
             sig = OQS_SIG_new(OQS_SIG_alg_dilithium_5);
             break;
         }
 
         default: {
-            pqsError(SIGNATURE_SIZE_ERROR, __LINE__, __FUNCTION__);
+            pqsError(PUBLIC_KEY_SIZE_ERROR, __LINE__, __FUNCTION__);
             exit(EXIT_FAILURE);
         }
     }
@@ -265,11 +236,11 @@ int dilithiumVerifySign(PQS_SIGN_CTX *ctx) {
         exit(EXIT_FAILURE);
     }
 
-    if (OQS_SIG_verify(sig, ctx->message, ctx->messageSize, ctx->signature, ctx->signatureSize, ctx->publicKey) != OQS_SUCCESS) {
+    if (OQS_SIG_verify(sig, ctx->message, ctx->messageSize, ctx->signature, ctx->signatureSize, ctx->publicKey)!= OQS_SUCCESS) {
         pqsError(SIGNATURE_VERIFICATION_ERROR, __LINE__, __FUNCTION__);
         exit(EXIT_FAILURE);
     }
 
     OQS_SIG_free(sig);
-    return 1; // Vérification réussie
+    return PQS_DILIITHIUM_SIGNATURE_VERIFICATION_SUCCESS;
 }

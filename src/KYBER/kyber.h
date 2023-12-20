@@ -39,14 +39,14 @@
 #define KYBER_PRIVATE_KEY_SIZE_768_90S 2288
 #define KYBER_PRIVATE_KEY_SIZE_1024_90S 3008
 
-#define KYBER_SIGNATURE_SIZE_512 736
-#define KYBER_SIGNATURE_SIZE_768 1088
-#define KYBER_SIGNATURE_SIZE_1024 1440
-#define KYBER_SIGNATURE_SIZE_512_90S 736
-#define KYBER_SIGNATURE_SIZE_768_90S 1088
-#define KYBER_SIGNATURE_SIZE_1024_90S 1440
-
 #define KYBER_MAX_MESSAGE_SIZE 32
+
+#define KYBER_KEY_EXCHANGE_TOKEN_SIZE_512 768
+#define KYBER_KEY_EXCHANGE_TOKEN_SIZE_768 1088
+#define KYBER_KEY_EXCHANGE_TOKEN_SIZE_1024 1568
+
+#define KYBER_SYMMETRIC_KEY_SIZE 256
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -60,7 +60,6 @@ extern "C" {
 /// @param:  keySize: the size of the key to generate
 //
 /// @return: void
-//
 ////////////////////////////////////////////////////////////////////////////////////////
 void genKyberKeyPair(PQS_KEYGEN_CTX* ctx, int keySize);
 

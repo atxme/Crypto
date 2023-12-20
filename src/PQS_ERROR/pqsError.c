@@ -6,7 +6,7 @@
 // This file is a part of the "PQS" Post Quantum Security  project.                   //
 //                                                                                    //
 // Project : PQS_ERROR                                                                //                    
-// File    : pqsError.h                                                               //                
+// File    : pqsError.c                                                               //                
 // Author  : Benedetti Christophe                                                     //
 //                                                                                    //
 // This code is provided under the MIT license.                                       //
@@ -48,9 +48,8 @@ const char* PQS_ERROR_MESSAGE[] = {
 #include "pqsError.h"
 
 void writeFile(const char *file, int line, const char *function, int error_code) {
-
     time_t t = time(NULL);
-    struct tm tm = *localtime(&t);
+    struct tm *tm_info = localtime(&t);
 
     FILE *f = fopen(file, "a");
     if (f == NULL) {
@@ -59,10 +58,10 @@ void writeFile(const char *file, int line, const char *function, int error_code)
     }
 
     // Écrire le message dans le fichier
-    fprintf(f, "Error: %s in %s at line %s. Time: %d-%02d-%02d %02d:%02d:%02d\n",
+    fprintf(f, "Error: %s in %s at line %d. Time: %d-%02d-%02d %02d:%02d:%02d\n",
             PQS_ERROR_MESSAGE[error_code], function, line,
-            tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday,
-            tm.tm_hour, tm.tm_min, tm.tm_sec);
+            tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday,
+            tm_info->tm_hour, tm_info->tm_min, tm_info->tm_sec);
 
     // Fermer le fichier
     fclose(f);
@@ -88,7 +87,7 @@ void pqsError(PQS_ERROR error_code, int line, const char *function)
             exit(EXIT_FAILURE);
         }
 
-        #ifdef WIN32
+        #ifdef _WIN32
             DWORD attrib = GetFileAttributesA(file);
             if (attrib != INVALID_FILE_ATTRIBUTES && !(attrib & FILE_ATTRIBUTE_DIRECTORY)){
                 printf("ERROR : %s in %s at line %d\n", "file is not existing or is a directory", "\nid : PQS_ERROR_MANAGER");

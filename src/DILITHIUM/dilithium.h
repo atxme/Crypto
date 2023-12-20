@@ -25,8 +25,8 @@
 #ifndef DILIITHIUM_H
 #define DILIITHIUM_H
 
-#define PQS_DILIITHIUM_SIGNATURE_VERIFICATION_SUCCESS 4009
-#define PQS_DILIITHIUM_SIGNATURE_VERIFICATION_FAILED  8000
+#define PQS_DILIITHIUM_SIGNATURE_VERIFICATION_SUCCESS 0
+#define PQS_DILIITHIUM_SIGNATURE_VERIFICATION_FAILED  1
 
 #define DILIITHIUM_PUBLIC_KEY_SIZE_2 1312
 #define DILIITHIUM_PUBLIC_KEY_SIZE_3 1952
@@ -43,8 +43,8 @@
 #define DILIITHIUM_PRIVATE_KEY_SIZE_5_AES 5216
 
 #define DILIITHIUM_SIGNATURE_SIZE_2 2420
-#define DILIITHIUM_SIGNATURE_SIZE_3 3568
-#define DILIITHIUM_SIGNATURE_SIZE_5 4928
+#define DILIITHIUM_SIGNATURE_SIZE_3 3293
+#define DILIITHIUM_SIGNATURE_SIZE_5 4595
 #define DILIITHIUM_SIGNATURE_SIZE_2_AES 2304
 #define DILIITHIUM_SIGNATURE_SIZE_3_AES 3392
 #define DILIITHIUM_SIGNATURE_SIZE_5_AES 4688
@@ -96,7 +96,7 @@ void dilithiumSign(PQS_SIGN_CTX *ctx);
 //                    - The message size
 //                    - The signature size
 //
-/// @return int : 0 if the signature is valid, -1 otherwise
+/// @return int : PQS_DILIITHIUM_SIGNATURE_VERIFICATION_SUCCESS if the signature is valid, PQS_DILIITHIUM_SIGNATURE_VERIFICATION_FAILED otherwise
 //
 //////////////////////////////////////////////////////////////////////////
 int dilithiumVerifySign(PQS_SIGN_CTX *ctx);

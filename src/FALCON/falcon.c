@@ -101,9 +101,9 @@ void falconSign(PQS_SIGN_CTX *ctx){
 
     OQS_SIG *sig;
 
-    switch (ctx->signatureSize){
+    switch (ctx->privateKeySize){
             
-            case (FALCON_SIGNATURE_SIZE_512):
+            case (FALCON_PRIVATE_KEY_SIZE_512):
     
                 sig = OQS_SIG_new(OQS_SIG_alg_falcon_512);
     
@@ -123,7 +123,7 @@ void falconSign(PQS_SIGN_CTX *ctx){
     
                 break;
     
-            case (FALCON_SIGNATURE_SIZE_1024):
+            case (FALCON_PRIVATE_KEY_SIZE_1024):
     
                 sig = OQS_SIG_new(OQS_SIG_alg_falcon_1024);
     
@@ -173,13 +173,13 @@ int falconVerifySign(PQS_SIGN_CTX *ctx){
 
     OQS_SIG *sig;
 
-    switch (ctx->signatureSize){
+    switch (ctx->publicKeySize){
 
-        case  FALCON_SIGNATURE_SIZE_512:
+        case FALCON_PUBLIC_KEY_SIZE_512:
             sig = OQS_SIG_new(OQS_SIG_alg_falcon_512);
             break;
 
-        case  FALCON_SIGNATURE_SIZE_1024:
+        case  FALCON_PUBLIC_KEY_SIZE_1024:
             sig = OQS_SIG_new(OQS_SIG_alg_falcon_1024);
             break;
         
@@ -195,6 +195,7 @@ int falconVerifySign(PQS_SIGN_CTX *ctx){
 
     if (OQS_SIG_verify(sig, ctx->message, ctx->messageSize, ctx->signature, ctx->signatureSize, ctx->publicKey) != OQS_SUCCESS) {
         OQS_SIG_free(sig);
+        pqsError(SIGNATURE_VERIFICATION_ERROR, __LINE__, __FUNCTION__);
         return -1;
     }
 
