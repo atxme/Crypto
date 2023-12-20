@@ -1,5 +1,25 @@
 #pragma once
 
+////////////////////////////////////////////////////////////////////////////////////////
+// PQS API call interface                                                             //     
+//                                                                                    //                          
+// This file is a part of the "PQS" Post Quantum Security  project.                   //
+// You can simply call 1 function with differents parameters to use the API           //
+// You will be able to collect the output by casting it to the correct type           //
+// The correct type is define by the algorithm type you want to use                   //
+//                                                                                    //
+// You will have to cast the output using the ctx you have define                     //
+//                                                                                    //                                                                              
+// Project : PQS API                                                                  //                    
+// File    : pqs.h                                                                    //                
+// Author  : Benedetti Christophe                                                     //
+//                                                                                    //
+// This code is provided under the MIT license.                                       //
+// Please refer to the LICENSE file for licensing information.                        //
+//                                                                                    //
+////////////////////////////////////////////////////////////////////////////////////////
+
+
 #include <oqs/oqs.h>
 #include <string.h>
 #include <stdio.h>
@@ -10,22 +30,12 @@
 #include "pqsCtx.h"
 #include "pqsError.h"
 
-#define FALCON_PUBLIC_KEY_SIZE_512 768
-#define FALCON_PUBLIC_KEY_SIZE_1024 1792
-#define FALCON_PRIVATE_KEY_SIZE_1024 1280
-#define FALCON_PRIVATE_KEY_SIZE_512 512
-
-
-#define FALCON_SIGNATURE_SIZE_1024 2304
-#define FALCON_SIGNATURE_SIZE_512 1024
-
 #define KYBER_PUBLIC_KEY_SIZE_512 800
 #define KYBER_PUBLIC_KEY_SIZE_768 1184
 #define KYBER_PUBLIC_KEY_SIZE_1024 1568
 #define KYBER_PUBLIC_KEY_SIZE_512_90S 736
 #define KYBER_PUBLIC_KEY_SIZE_768_90S 1088
 #define KYBER_PUBLIC_KEY_SIZE_1024_90S 1440
-
 
 #define KYBER_PRIVATE_KEY_SIZE_512 1632
 #define KYBER_PRIVATE_KEY_SIZE_768 2400
@@ -34,13 +44,16 @@
 #define KYBER_PRIVATE_KEY_SIZE_768_90S 2288
 #define KYBER_PRIVATE_KEY_SIZE_1024_90S 3008
 
-#define KYBER_SIGNATURE_SIZE_512 736
-#define KYBER_SIGNATURE_SIZE_768 1088
-#define KYBER_SIGNATURE_SIZE_1024 1440
-#define KYBER_SIGNATURE_SIZE_512_90S 736
-#define KYBER_SIGNATURE_SIZE_768_90S 1088
-#define KYBER_SIGNATURE_SIZE_1024_90S 1440
+#define KYBER_MAX_MESSAGE_SIZE 32
 
+#define KYBER_KEY_EXCHANGE_TOKEN_SIZE_512 768
+#define KYBER_KEY_EXCHANGE_TOKEN_SIZE_768 1088
+#define KYBER_KEY_EXCHANGE_TOKEN_SIZE_1024 1568
+
+#define KYBER_SYMMETRIC_KEY_SIZE 256
+
+#define PQS_DILIITHIUM_SIGNATURE_VERIFICATION_SUCCESS 0
+#define PQS_DILIITHIUM_SIGNATURE_VERIFICATION_FAILED  1
 
 #define DILIITHIUM_PUBLIC_KEY_SIZE_2 1312
 #define DILIITHIUM_PUBLIC_KEY_SIZE_3 1952
@@ -57,12 +70,18 @@
 #define DILIITHIUM_PRIVATE_KEY_SIZE_5_AES 5216
 
 #define DILIITHIUM_SIGNATURE_SIZE_2 2420
-#define DILIITHIUM_SIGNATURE_SIZE_3 3568
-#define DILIITHIUM_SIGNATURE_SIZE_5 4928
+#define DILIITHIUM_SIGNATURE_SIZE_3 3293
+#define DILIITHIUM_SIGNATURE_SIZE_5 4595
 #define DILIITHIUM_SIGNATURE_SIZE_2_AES 2304
 #define DILIITHIUM_SIGNATURE_SIZE_3_AES 3392
 #define DILIITHIUM_SIGNATURE_SIZE_5_AES 4688
 
+#define FALCON_PUBLIC_KEY_SIZE_512 897
+#define FALCON_PUBLIC_KEY_SIZE_1024 1793
+#define FALCON_PRIVATE_KEY_SIZE_512 1281
+#define FALCON_PRIVATE_KEY_SIZE_1024 2305
+#define FALCON_SIGNATURE_MAX_SIZE_512 690  
+#define FALCON_SIGNATURE_MAX_SIZE_1024 1330 
 
 enum PQS_ALGORITHM{
     FALCON_512 = 0,
