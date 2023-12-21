@@ -3,7 +3,10 @@
 #include "KYBER/kyber.h"
 #include "DILITHIUM/dilithium.h"
 #include "PQS_ERROR/pqsError.h"
-#include <assert.h>
+
+#include <oqs/oqs.h>
+
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -53,6 +56,7 @@ void verifyParameter(int algorithmetype,
                 exit(EXIT_FAILURE);
             }
             break;
+
         case DECRYPTION:
 
             if (privateKey == NULL) {
@@ -96,6 +100,9 @@ void verifyParameter(int algorithmetype,
 
 void PQS_API(int algorithmetype, int algorithm, unsigned char* publicKey, unsigned char* privateKey, unsigned char* message,size_t messageSize ,int keySize, void** API_CALL_RETURN)
 {
+    OQS_KEM *kem;
+    kem = OQS_KEM_new(OQS_KEM_alg_ntruprime_sntrup761);
+
     verifyParameter(algorithmetype,
                     algorithm,
                     publicKey,
