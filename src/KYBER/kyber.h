@@ -19,8 +19,8 @@
 //                                                                                    //
 ////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef DILIITHIUM_H
-#define DILIITHIUM_H
+#ifndef KYBER_H
+#define KYBER_H
 
 #include "pqsCtx.h"
 #include "pqsError.h"

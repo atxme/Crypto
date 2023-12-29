@@ -178,99 +178,67 @@ void encryptKyber(PQS_ENCRYPT_CTX* ctx){
 ////////////////////////////////////////////////////////////////////////////////////////
 // Kyber decryption
 ////////////////////////////////////////////////////////////////////////////////////////
-int decryptKyber(PQS_DECRYPT_CTX* ctx){
+int decryptKyber(PQS_DECRYPT_CTX* ctx) {
 
-    if (ctx==NULL)
-    {
+    if (ctx == NULL) {
         pqsError(CTX_IS_NULL, __LINE__, __FUNCTION__);
         return 1;
     }
 
-    if (ctx->cipherText == NULL)
-    {
+    if (ctx->cipherText == NULL) {
         free(ctx->privateKey);
         pqsError(MESSAGE_ERROR, __LINE__, __FUNCTION__);
         return 1;
     }
 
-    if (ctx->privateKey == NULL)
-    {
+    if (ctx->privateKey == NULL) {
         free(ctx->cipherText);
         pqsError(PRIVATE_KEY_ERROR, __LINE__, __FUNCTION__);
         return 1;
     }
 
-    if (ctx->keySize != KYBER_PUBLIC_KEY_SIZE_512 && ctx->keySize != KYBER_PUBLIC_KEY_SIZE_768 && ctx->keySize != KYBER_PUBLIC_KEY_SIZE_1024 && ctx->keySize != KYBER_PUBLIC_KEY_SIZE_512_90S && ctx->keySize != KYBER_PUBLIC_KEY_SIZE_768_90S && ctx->keySize != KYBER_PUBLIC_KEY_SIZE_1024_90S)
-    {
+    if (ctx->keySize != KYBER_PUBLIC_KEY_SIZE_512 && ctx->keySize != KYBER_PUBLIC_KEY_SIZE_768 && ctx->keySize != KYBER_PUBLIC_KEY_SIZE_1024 && ctx->keySize != KYBER_PUBLIC_KEY_SIZE_512_90S && ctx->keySize != KYBER_PUBLIC_KEY_SIZE_768_90S && ctx->keySize != KYBER_PUBLIC_KEY_SIZE_1024_90S) {
         free(ctx->privateKey);
+        free(ctx->cipherText);
         pqsError(KEY_SIZE_ERROR, __LINE__, __FUNCTION__);
         return 1;
     }
 
-    if (ctx->keySize == KYBER_PUBLIC_KEY_SIZE_512_90S || ctx->keySize == KYBER_PUBLIC_KEY_SIZE_768_90S || ctx->keySize == KYBER_PUBLIC_KEY_SIZE_1024_90S)
-    {
-        free(ctx->privateKey);
-        pqsError(CALL_FUNCTION_ERROR, __LINE__, __FUNCTION__);
-    }
+    OQS_KEM *kem;
 
-    OQS_KEM *kem ;
-
-    switch (ctx-> keySize)
-    {
-        case KYBER_PUBLIC_KEY_SIZE_512:{
-            
+    switch (ctx->keySize) {
+        case KYBER_PUBLIC_KEY_SIZE_512:
             kem = OQS_KEM_new(OQS_KEM_alg_kyber_512);
             ctx->symmetricKey = malloc(KYBER_SYMMETRIC_KEY_SIZE);
             ctx->keyExchangeToken = malloc(KYBER_KEY_EXCHANGE_TOKEN_SIZE_512);
             break;
-        }
-
-        case KYBER_PUBLIC_KEY_SIZE_768: {
+        case KYBER_PUBLIC_KEY_SIZE_768:
             kem = OQS_KEM_new(OQS_KEM_alg_kyber_768);
             ctx->symmetricKey = malloc(KYBER_SYMMETRIC_KEY_SIZE);
             ctx->keyExchangeToken = malloc(KYBER_KEY_EXCHANGE_TOKEN_SIZE_768);
-        }
-
-        case KYBER_PUBLIC_KEY_SIZE_1024: {
+            break;
+        case KYBER_PUBLIC_KEY_SIZE_1024:
             kem = OQS_KEM_new(OQS_KEM_alg_kyber_1024);
             ctx->symmetricKey = malloc(KYBER_SYMMETRIC_KEY_SIZE);
             ctx->keyExchangeToken = malloc(KYBER_KEY_EXCHANGE_TOKEN_SIZE_1024);
-        }
-
+            break;
         default:
             pqsError(KEY_SIZE_ERROR, __LINE__, __FUNCTION__);
-            break;
+            return 1;
     }
 
-    if (kem == NULL)
-    {
+    if (kem == NULL || ctx->symmetricKey == NULL || ctx->keyExchangeToken == NULL) {
         free(ctx->symmetricKey);
         free(ctx->keyExchangeToken);
-        pqsError(ERROR_SIG_ALLOC, __LINE__, __FUNCTION__);
-        return 1;
-    }
-
-    if (ctx->symmetricKey == NULL)
-    {
         OQS_KEM_free(kem);
-        free(ctx->keyExchangeToken);
         pqsError(MALLOC_ERROR, __LINE__, __FUNCTION__);
         return 1;
     }
 
-    if (ctx->keyExchangeToken == NULL)
-    {
-        OQS_KEM_free(kem);
-        free(ctx->symmetricKey);
-        pqsError(MALLOC_ERROR, __LINE__, __FUNCTION__);
-        return 1;
-    }
-
-    if (OQS_KEM_decaps(kem, ctx->symmetricKey   , ctx->cipherText, ctx->privateKey) != OQS_SUCCESS)
-    {
-        OQS_KEM_free(kem);
+    if (OQS_KEM_decaps(kem, ctx->symmetricKey, ctx->cipherText, ctx->privateKey) != OQS_SUCCESS) {
         free(ctx->symmetricKey);
         free(ctx->keyExchangeToken);
+        OQS_KEM_free(kem);
         pqsError(DECRYPTION_ERROR, __LINE__, __FUNCTION__);
         return 1;
     }

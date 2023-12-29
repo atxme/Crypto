@@ -23,7 +23,7 @@
 #define FALCON_H
 
 #include "pqsError.h"
-#include "pqsCtx.h"
+#include "ctxAlloc/ctxAlloc.h"
 
 
 #define FALCON_PUBLIC_KEY_SIZE_512 897

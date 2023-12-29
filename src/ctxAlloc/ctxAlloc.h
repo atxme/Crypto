@@ -1,0 +1,114 @@
+////////////////////////////////////////////////////////////////////////////////////////
+// Context Integration for PQS API
+//
+// This file is a part of the "PQS" Post Quantum Security project.
+// This code provides all the context for the PQS API.
+//
+// Project: PQS Crypto
+// File: ctxAlloc.h
+// Author: Benedetti Christophe
+//
+// This code is provided under the MIT license.
+// Please refer to the LICENSE file for licensing information.
+//
+////////////////////////////////////////////////////////////////////////////////////////
+
+#ifndef __PQS_ALLOC_H__
+#define __PQS_ALLOC_H__
+
+#include "pqsCtx.h"
+#include <stddef.h>
+#include "PQS_ERROR/pqsError.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+// init pqs ctx for key generation return
+//
+/// @brief This function allocates the context for the PQS_KEY_GEN return and return the pointeur to the context.
+//
+/// @return PQS_KEYGEN_CTX* : The context for the PQS_KEY_GEN return.
+//
+////////////////////////////////////////////////////////////////////////////////////////
+PQS_KEYGEN_CTX* createPqsKeygenCtx();
+
+////////////////////////////////////////////////////////////////////////////////////////
+// free pqs ctx for key generation return
+//
+/// @brief This function free the context for the PQS_KEY_GEN return.
+//
+/// @param ctx : The context for the PQS_KEY_GEN return.
+//
+////////////////////////////////////////////////////////////////////////////////////////
+void freePqsKeygenCtx(PQS_KEYGEN_CTX* ctx);
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+// init pqs ctx for signature
+//
+/// @brief This function allocates the context for the PQS_SIGN return and return the pointeur to the context.
+//
+/// @return PQS_SIGN_CTX* : The context for the PQS_SIGN return.
+//
+////////////////////////////////////////////////////////////////////////////////////////
+PQS_SIGN_CTX* createPqsSignCtx();
+
+////////////////////////////////////////////////////////////////////////////////////////
+// free pqs ctx for signature
+//
+/// @brief This function free the context for the PQS_SIGN return.
+//
+/// @param ctx : The context for the PQS_SIGN return.
+//
+////////////////////////////////////////////////////////////////////////////////////////
+void freePqsSignCtx(PQS_SIGN_CTX* ctx);
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+// init pqs ctx for encryption or key negociation return
+// 
+/// @brief This function allocates the context for the PQS_ENCRYPT return and return the pointeur to the context.
+//
+/// @return PQS_ENCRYPT_CTX* : The context for the PQS_ENCRYPT return.
+//
+////////////////////////////////////////////////////////////////////////////////////////
+PQS_ENCRYPT_CTX* createPqsEncryptCtx();
+
+////////////////////////////////////////////////////////////////////////////////////////
+// free pqs ctx for encryption or key negociation return
+//
+/// @brief This function free the context for the PQS_ENCRYPT return.
+//
+/// @param ctx : The context for the PQS_ENCRYPT return.
+//
+////////////////////////////////////////////////////////////////////////////////////////
+void freePqsEncryptCtx(PQS_ENCRYPT_CTX* ctx);
+
+////////////////////////////////////////////////////////////////////////////////////////
+// init pqs ctx for decryption
+//
+/// @brief This function allocates the context for the PQS_DECRYPT return and return the pointeur to the context.
+//
+/// @return PQS_DECRYPT_CTX* : The context for the PQS_DECRYPT return.
+//
+////////////////////////////////////////////////////////////////////////////////////////
+PQS_DECRYPT_CTX* createPqsDecryptCtx();
+
+////////////////////////////////////////////////////////////////////////////////////////
+// free pqs ctx for decryption
+//
+/// @brief This function free the context for the PQS_DECRYPT return.
+//
+/// @param ctx : The context for the PQS_DECRYPT return.
+//
+////////////////////////////////////////////////////////////////////////////////////////
+void freePqsDecryptCtx(PQS_DECRYPT_CTX* ctx);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif // __PQS_ALLOC_H__

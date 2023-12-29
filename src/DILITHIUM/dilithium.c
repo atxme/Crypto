@@ -40,7 +40,7 @@ void genDilithiumKeyPair(PQS_KEYGEN_CTX *ctx, unsigned int dilithiumKeySize){
 
     switch (dilithiumKeySize){
 
-        case (DILIITHIUM_PUBLIC_KEY_SIZE_2):
+        case (DILIITHIUM_PUBLIC_KEY_SIZE_2): {
 
             sig = OQS_SIG_new(OQS_SIG_alg_dilithium_2);
 
@@ -49,19 +49,20 @@ void genDilithiumKeyPair(PQS_KEYGEN_CTX *ctx, unsigned int dilithiumKeySize){
                 exit(EXIT_FAILURE);
             }
 
-            ctx->publicKey = malloc(sig->length_public_key * sizeof(unsigned char));
-            ctx->privateKey = malloc(sig->length_secret_key * sizeof(unsigned char));
+            ctx->publicKey = malloc(DILIITHIUM_PUBLIC_KEY_SIZE_2);
+            ctx->privateKey = malloc(DILIITHIUM_PRIVATE_KEY_SIZE_2);
 
             if (ctx->publicKey == NULL || ctx->privateKey == NULL) {
                 pqsError(MALLOC_ERROR, __LINE__,__FUNCTION__);
                 exit(EXIT_FAILURE);
             }
-
+            //OQS_SIG_dilithium_2_keypair
             OQS_SIG_keypair(sig, ctx->publicKey, ctx ->privateKey); //OQS API CALL
 
             break;
+        }
 
-        case (DILIITHIUM_PUBLIC_KEY_SIZE_3):
+        case (DILIITHIUM_PUBLIC_KEY_SIZE_3): {
 
             sig = OQS_SIG_new(OQS_SIG_alg_dilithium_3);
 
@@ -70,8 +71,8 @@ void genDilithiumKeyPair(PQS_KEYGEN_CTX *ctx, unsigned int dilithiumKeySize){
                 exit(EXIT_FAILURE);
             }
 
-            ctx->publicKey = malloc(sig->length_public_key * sizeof(unsigned char));
-            ctx->privateKey = malloc(sig->length_secret_key * sizeof(unsigned char));
+            ctx->publicKey = malloc(DILIITHIUM_PUBLIC_KEY_SIZE_3);
+            ctx->privateKey = malloc(DILIITHIUM_PRIVATE_KEY_SIZE_3);
 
             if (ctx->publicKey == NULL || ctx->privateKey == NULL) {
                 pqsError(MALLOC_ERROR, __LINE__, __FUNCTION__);
@@ -81,8 +82,9 @@ void genDilithiumKeyPair(PQS_KEYGEN_CTX *ctx, unsigned int dilithiumKeySize){
             OQS_SIG_keypair(sig, ctx->publicKey, ctx->privateKey); //OQS API CALL
 
             break;
+        }
 
-        case (DILIITHIUM_PUBLIC_KEY_SIZE_5):
+        case (DILIITHIUM_PUBLIC_KEY_SIZE_5): {
 
             sig = OQS_SIG_new(OQS_SIG_alg_dilithium_5);
 
@@ -90,9 +92,9 @@ void genDilithiumKeyPair(PQS_KEYGEN_CTX *ctx, unsigned int dilithiumKeySize){
                 pqsError(ERROR_SIG_KEYGEN, __LINE__, __FUNCTION__);
                 exit(EXIT_FAILURE);
             }
-
-            ctx->publicKey = malloc(sig->length_public_key * sizeof(unsigned char));
-            ctx->privateKey = malloc(sig->length_secret_key * sizeof(unsigned char));
+            
+            ctx->publicKey = malloc(DILIITHIUM_PUBLIC_KEY_SIZE_5);
+            ctx->privateKey = malloc(DILIITHIUM_PRIVATE_KEY_SIZE_5);
 
             if (ctx->publicKey == NULL || ctx->privateKey == NULL) {
                 pqsError(MALLOC_ERROR, __LINE__, __FUNCTION__);
@@ -102,6 +104,7 @@ void genDilithiumKeyPair(PQS_KEYGEN_CTX *ctx, unsigned int dilithiumKeySize){
             OQS_SIG_keypair(sig, ctx->publicKey, ctx->privateKey); //OQS API CALL
 
             break;
+        }
     }
 
     OQS_SIG_free(sig);

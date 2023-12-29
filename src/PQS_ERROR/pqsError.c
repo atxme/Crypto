@@ -33,6 +33,7 @@ const char* PQS_ERROR_MESSAGE[] = {
     "encryption size is invalid or not supported",
     "decryption size is invalid or not supported",
     "ctx is not define or ctx pointer is NULL",
+    "ctx size is not valid",
     "key generation as failed",
 
 

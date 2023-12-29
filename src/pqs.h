@@ -28,7 +28,6 @@
 
 #include "crypto.h"
 #include "pqsCtx.h"
-#include "pqsError.h"
 
 #define KYBER_PUBLIC_KEY_SIZE_512 800
 #define KYBER_PUBLIC_KEY_SIZE_768 1184
@@ -50,7 +49,7 @@
 #define KYBER_KEY_EXCHANGE_TOKEN_SIZE_768 1088
 #define KYBER_KEY_EXCHANGE_TOKEN_SIZE_1024 1568
 
-#define KYBER_SYMMETRIC_KEY_SIZE 256
+#define KYBER_SYMMETRIC_KEY_SIZE 32
 
 #define PQS_DILIITHIUM_SIGNATURE_VERIFICATION_SUCCESS 0
 #define PQS_DILIITHIUM_SIGNATURE_VERIFICATION_FAILED  1
@@ -62,9 +61,9 @@
 #define DILIITHIUM_PUBLIC_KEY_SIZE_3_AES 1760
 #define DILIITHIUM_PUBLIC_KEY_SIZE_5_AES 2336
 
-#define DILIITHIUM_PRIVATE_KEY_SIZE_2 2544
-#define DILIITHIUM_PRIVATE_KEY_SIZE_3 3888
-#define DILIITHIUM_PRIVATE_KEY_SIZE_5 5568
+#define DILIITHIUM_PRIVATE_KEY_SIZE_2 2528
+#define DILIITHIUM_PRIVATE_KEY_SIZE_3 4000
+#define DILIITHIUM_PRIVATE_KEY_SIZE_5 4864
 #define DILIITHIUM_PRIVATE_KEY_SIZE_2_AES 2400
 #define DILIITHIUM_PRIVATE_KEY_SIZE_3_AES 3648
 #define DILIITHIUM_PRIVATE_KEY_SIZE_5_AES 5216
@@ -109,12 +108,6 @@ enum PQS_ALGORITHM_TYPE{
 };
 
 
-//////////////////////////////////////////
-// print hex 
-//////////////////////////////////////////
-void print_hex(unsigned char *buf, int len);
-
-
 //////////////////////////////////////////////////////////////////////////////////////////
 /// @brief: API FOR POST QUANTUM CRYPTOGRAPHY INTERACTION 
 /// @brief: FOR KEY GENERATION you must put the public key size in the keySize parameter
@@ -137,11 +130,7 @@ void print_hex(unsigned char *buf, int len);
 //
 /// @return void 
 //////////////////////////////////////////////////////////////////////////////////////////
-void PQS_API(int algorithmetype, 
-            int algorithm, 
-            unsigned char* publicKey, 
-            unsigned char* privateKey, 
-            unsigned char* message,
-            size_t messageSize ,
-            int keySize,
-            void** API_CALL_RETURN);
+void PQS_API(PQS_API_PARAM* ctx);
+
+
+

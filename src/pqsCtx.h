@@ -23,6 +23,7 @@ extern "C" {
 #include <oqs/oqs.h>
 #include <stddef.h>
 
+
 ////////////////////////////////////////////////////////////////////////////////////////
 // CONTEXT FOR PQS_API_PARAM
 //
@@ -41,14 +42,24 @@ extern "C" {
 //
 ////////////////////////////////////////////////////////////////////////////////////////
 typedef struct PQS_API_PARAM {
-    int algorithmetype;           // Type of algorithm to use
-    int algorithm;                // Algorithm to use
-    unsigned char* publicKey;     // Public key for encryption/decryption/signature verification
-    unsigned char* privateKey;    // Private key for encryption/decryption/signature
-    unsigned char* message;       // Message to encrypt/decrypt
-    size_t messageSize;           // Size of the message to encrypt/decrypt
-    size_t keySize;               // Size of the key to generate
-    void* output;                 // API output
+    int mode;                           // Mode d'opération
+    int algorithm;                      // Algorithm
+    unsigned char* publicKey;           // Public key
+    size_t publicKeySize;               // Public key size
+    unsigned char* privateKey;          // Private key
+    size_t privateKeySize;              // Private key size
+    unsigned char* message;             // Message
+    size_t messageSize;                 // Message size
+    unsigned char* cipherText;          // Cipher text
+    size_t cipherTextSize;              // Cipher text size
+    unsigned char* sharedSecret;        // Shared secret
+    size_t sharedSecretSize;            // Shared secret size
+    unsigned char* keyExchangeToken;    // Key exchange token
+    size_t keyExchangeTokenSize;        // Key exchange token size
+    unsigned char* symmetricKey;        // Symmetric key
+    int keySize;                        // Key size
+    int isogeny;                        // Isogeny
+    void* output;                        // API call return
 } PQS_API_PARAM;
 
 
