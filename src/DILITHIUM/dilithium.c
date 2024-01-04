@@ -1,4 +1,5 @@
 #include "dilithium.h"
+#include "crypto.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // Dilithium integration for PQS API                                                  //     
@@ -181,7 +182,7 @@ void dilithiumSign(PQS_SIGN_CTX *ctx)
                 }
 
     if (OQS_SIG_sign(sig, ctx->signature, &ctx->signatureSize, ctx->message, ctx->messageSize, ctx->privateKey) != OQS_SUCCESS) {
-            pqsError(KEYGEN_ERROR, __LINE__, __FUNCTION__);
+            pqsError(SIGNATURE_ERROR, __LINE__, __FUNCTION__);
             exit(EXIT_FAILURE);
         }
 

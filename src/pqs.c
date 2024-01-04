@@ -722,6 +722,8 @@ void PQS_API(PQS_API_PARAM *ctx) {
                     freePqsEncryptCtx(encrypt_ctx);
                     break;
                 }
+
+                break;
             
             }
             break;
@@ -731,7 +733,6 @@ void PQS_API(PQS_API_PARAM *ctx) {
         case DECRYPTION : {
             switch (ctx->algorithm) 
                 {
-                    
                     case KYBER_512 : {
                         PQS_DECRYPT_CTX *decrypt_ctx = createPqsDecryptCtx();
                         if (decrypt_ctx == NULL) {
@@ -843,8 +844,3 @@ void PQS_API(PQS_API_PARAM *ctx) {
 }
         
     
-
-
-
-
-

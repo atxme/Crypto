@@ -1,2 +1,10 @@
 command.txt
 settings.json
+/DILITHIUM/main.c
+src/KYBER/main.c
+src/FALCON/main.c
+test.exe
+/build
+public_key.pem
+private_key.pem
+```

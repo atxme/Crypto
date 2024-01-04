@@ -57,6 +57,8 @@ typedef struct PQS_API_PARAM {
     unsigned char* keyExchangeToken;    // Key exchange token
     size_t keyExchangeTokenSize;        // Key exchange token size
     unsigned char* symmetricKey;        // Symmetric key
+    unsigned char* signature;           // Signature
+    size_t signatureSize;               // Signature size
     int keySize;                        // Key size
     int isogeny;                        // Isogeny
     void* output;                        // API call return

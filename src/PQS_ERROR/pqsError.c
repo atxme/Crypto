@@ -17,6 +17,7 @@
 const char* PQS_ERROR_MESSAGE[] = {
     "a pointer is not define",
     "manually memory allocation as failed",
+    "The mode is invalid or not supported",
     "algorithme type is not define or not supported",
     "algorithme is not define or not supported",
     "public key is empty or not defined or is not valid",

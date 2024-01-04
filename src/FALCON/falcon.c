@@ -52,7 +52,7 @@ void falconKeyGen(PQS_KEYGEN_CTX *ctx, int keySize) {
         pqsError(MALLOC_ERROR, __LINE__, __FUNCTION__);
         return;
     }
-
+    
     if (OQS_SIG_keypair(sig, ctx->publicKey, ctx->privateKey) != OQS_SUCCESS) {
         free(ctx->publicKey);
         free(ctx->privateKey);
@@ -60,7 +60,7 @@ void falconKeyGen(PQS_KEYGEN_CTX *ctx, int keySize) {
         pqsError(KEYGEN_ERROR, __LINE__, __FUNCTION__);
         return;
     }
-
+    
     OQS_SIG_free(sig);
 }
 
